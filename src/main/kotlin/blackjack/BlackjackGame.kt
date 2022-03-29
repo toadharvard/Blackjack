@@ -1,5 +1,6 @@
 package blackjack
 
+import blackjack.classes.ScoreCounter
 import blackjack.classes.Shoe
 import blackjack.classes.State
 import blackjack.interfaces.IDealer
@@ -12,11 +13,13 @@ class BlackjackGame(
     override val ioHandler: IOHandler
 ) : IGame {
     var state: State = State.Start(this)
-    override var bet: Int = 0
     override val shoe = Shoe(8)
     override fun run() {
         while (state != State.GameOver(this)) {
-            state = state.action.execute()
+            state.doBeforeActionExecution()
+            val nextState = state.action.execute()
+            state.doAfterActionExecution()
+            state = nextState
         }
     }
 }

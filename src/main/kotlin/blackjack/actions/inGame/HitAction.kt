@@ -1,14 +1,15 @@
 package blackjack.actions.inGame
 
-import blackjack.interfaces.IAction
+import blackjack.classes.Hand
 import blackjack.interfaces.IGame
+import blackjack.interfaces.IInGameAction
 import blackjack.interfaces.IPlayer
 
-class HitAction(val game: IGame, val player: IPlayer) : IAction {
+class HitAction(val game: IGame, val activeHand: Hand) : IInGameAction {
     override val displayName: String
         get() = "Hit"
 
     override fun execute() {
-        player.hand.addCard(game.shoe.dealCard(isFaceUp = true))
+        activeHand.addCard(game.shoe.dealCard(isFaceUp = true))
     }
 }

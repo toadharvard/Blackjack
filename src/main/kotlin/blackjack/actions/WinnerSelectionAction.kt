@@ -8,52 +8,34 @@ import blackjack.interfaces.IStateAction
 class WinnerSelectionAction(override val game: IGame) :
     IStateAction {
     override fun execute(): State {
-        game.ioHandler.print("Winner selection:")
-
-        game.dealer.hand.flipAllCards(true)
-
-        val playerScore = ScoreCounter.recalculate(game.player)
-        val dealerScore = ScoreCounter.recalculate(game.dealer)
-        val playerHasBlackjack = (game.player.hand.cards.size == 2 && playerScore == 21)
-        val dealerHasBlackjack = (game.dealer.hand.cards.size == 2 && dealerScore == 21)
-
-        game.ioHandler.showCards("Player cards:", game.player.hand.cards)
-        game.ioHandler.print("Player score: $playerScore, has blackjack: $playerHasBlackjack")
-
-        game.ioHandler.showCards("Dealer cards:", game.dealer.hand.cards)
-        game.ioHandler.print("Dealer score: $dealerScore, has blackjack: $dealerHasBlackjack")
-
-
-        if (playerScore > 21) {
-            game.ioHandler.print("You lose!")
+        if (game.player.hands.size == 0)
             return State.GameOver(game)
-        }
+        val currentHand = game.player.hands.removeFirst()
+
+        val playerScore = ScoreCounter.recalculate(game.player.activeHand)
+        val dealerScore = ScoreCounter.recalculate(game.dealer.activeHand)
+        val playerHasBlackjack =
+            (game.player.activeHand.cards.size == 2 && game.player.hands.size == 1 && playerScore == 21)
+        val dealerHasBlackjack =
+            (game.dealer.activeHand.cards.size == 2 && game.dealer.hands.size == 1 && dealerScore == 21)
+
+        if (playerScore > 21)
+            return State.PlayerLooses(game, currentHand)
 
         if (dealerScore > 21) {
-            game.ioHandler.print("You won! Balance is doubled")
-            game.player.balance += 2 * game.bet
-            return State.GameOver(game)
+            return State.PlayerWon(game, currentHand)
         }
 
         if (playerHasBlackjack && dealerHasBlackjack || playerScore == dealerScore) {
-            game.ioHandler.print("Draw! Your bet is returned")
-            game.player.balance += game.bet
-            game.bet = 0
-            return State.GameOver(game)
+            return State.PlayerDrew(game, currentHand)
         }
 
-        if (playerHasBlackjack) {
-            game.ioHandler.print("You won! Earning is 3/2 of the bet.")
-            game.player.balance +=  game.bet + game.bet * 3/2
-            return State.GameOver(game)
-        }
-        if (playerScore > dealerScore){
-            game.ioHandler.print("You won! Balance is doubled")
-            game.player.balance +=  game.bet + game.bet * 3/2
-            return State.GameOver(game)
-        }
+        if (playerHasBlackjack)
+            return State.PlayerWonWithBlackjack(game, currentHand)
 
-        game.ioHandler.print("You lose!")
-        return State.GameOver(game)
+        if (playerScore > dealerScore)
+            return State.PlayerWon(game, currentHand)
+
+        return State.PlayerLooses(game, currentHand)
     }
 }

@@ -1,6 +1,6 @@
 package blackjack.interfaces
 
-interface IAction {
+interface IInGameAction {
     val displayName: String
         get() = this::class.java.simpleName
 

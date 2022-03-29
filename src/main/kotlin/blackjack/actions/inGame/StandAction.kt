@@ -1,11 +1,14 @@
 package blackjack.actions.inGame
 
-import blackjack.interfaces.IAction
+import blackjack.classes.Hand
+import blackjack.interfaces.IGame
+import blackjack.interfaces.IInGameAction
 
-class StandAction : IAction {
+class StandAction(val game: IGame, val activeHand: Hand) : IInGameAction {
     override val displayName: String
         get() = "Stand"
 
     override fun execute() {
+        activeHand.blocked = true
     }
 }

@@ -1,9 +1,8 @@
 package blackjack.classes
 
 import blackjack.interfaces.IDealer
-import blackjack.interfaces.IHand
 
-class Dealer : IDealer {
-    override var balance = 0
-    override val hand: IHand = Hand()
+class Dealer(override var balance: Int = 999999) : IDealer {
+    override val hands = mutableListOf(Hand())
+    override var activeHand: Hand = hands.first()
 }

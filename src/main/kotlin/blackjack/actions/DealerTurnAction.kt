@@ -8,16 +8,12 @@ import blackjack.interfaces.IStateAction
 
 class DealerTurnAction(override val game: IGame) : IStateAction {
     override fun execute(): State {
-        game.ioHandler.print("Dealer turn:")
-
-        game.dealer.hand.flipAllCards(true)
-
-        while (ScoreCounter.recalculate(game.dealer) < 17) {
-            game.ioHandler.showCards("Player cards:", game.player.hand.cards)
-            game.ioHandler.showCards("Dealer cards:", game.dealer.hand.cards)
-            HitAction(game, game.dealer).execute()
+        if (ScoreCounter.recalculate(game.dealer.activeHand) >= 17) {
+            return State.WinnerSelection(game)
         }
 
-        return State.WinnerSelection(game)
+        game.dealer.activeHand.flipAllCards(true)
+        HitAction(game, game.dealer.activeHand).execute()
+        return State.DealerTurn(game)
     }
 }
