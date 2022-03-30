@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm") version "1.6.0"
+    id("org.jetbrains.kotlinx.kover") version "0.5.0"
     application
 }
 
@@ -13,6 +14,8 @@ repositories {
 }
 
 dependencies {
+    implementation("org.junit.jupiter:junit-jupiter:5.8.1")
+
     testImplementation(kotlin("test"))
 }
 
