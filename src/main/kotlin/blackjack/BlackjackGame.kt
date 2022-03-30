@@ -10,7 +10,8 @@ import blackjack.interfaces.IPlayer
 
 class BlackjackGame(
     override val dealer: IDealer, override val player: IPlayer,
-    override val ioHandler: IOHandler
+    override val ioHandler: IOHandler,
+    override val minimumBetSize: Int = 10
 ) : IGame {
     var state: State = State.Start(this)
     override val shoe = Shoe(8)

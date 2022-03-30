@@ -5,8 +5,7 @@ import blackjack.interfaces.IGame
 import blackjack.interfaces.IInGameAction
 
 class SplitAction(val game: IGame, val hand: Hand) : IInGameAction {
-    override val displayName: String
-        get() = "Split"
+    override val displayName: String = "Split"
 
     override fun execute() {
         val newHand = hand.splitByLastCard()

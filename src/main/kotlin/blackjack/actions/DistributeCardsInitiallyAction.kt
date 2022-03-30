@@ -1,14 +1,11 @@
 package blackjack.actions
 
-import blackjack.classes.Card
 import blackjack.classes.Hand
 import blackjack.classes.State
-import blackjack.enums.CardFace
-import blackjack.enums.CardSuit
 import blackjack.interfaces.IGame
 import blackjack.interfaces.IStateAction
 
-class DistributeCardsInitiallyAction(override val game: IGame, val initialBet: Int) :
+class DistributeCardsInitiallyAction(override val game: IGame, private val initialBet: Int) :
     IStateAction {
     override fun execute(): State {
         game.dealer.hands.add(Hand())

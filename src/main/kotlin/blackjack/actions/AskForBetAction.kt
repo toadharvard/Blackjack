@@ -7,7 +7,7 @@ import blackjack.interfaces.IStateAction
 class AskForBetAction(override val game: IGame) :
     IStateAction {
     override fun execute(): State {
-        if (game.player.balance < 10) {
+        if (game.player.balance < game.minimumBetSize) {
             return State.NotEnoughMoney(game)
         }
 

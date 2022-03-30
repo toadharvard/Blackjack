@@ -12,7 +12,7 @@ import blackjack.interfaces.IInGameAction
 import blackjack.interfaces.IPlayer
 import blackjack.interfaces.IStateAction
 
-class PlayerTurnAction(override val game: IGame) : IStateAction {
+class PlayersMoveAction(override val game: IGame) : IStateAction {
 
     private fun canUseSplitAction(activeHand: Hand, player: IPlayer): Boolean {
         return activeHand.cards.size == 2 && activeHand.bet <= player.balance && ScoreCounter.calculateForCard(
@@ -43,7 +43,8 @@ class PlayerTurnAction(override val game: IGame) : IStateAction {
         game.player.activeHand =
             game.ioHandler.chooseFromHands(
                 "Choose desired active hand",
-                *game.player.hands.filter { !it.blocked }.toTypedArray()
+                game.player.activeHand,
+                *game.player.hands.filter { !it.blocked }.toTypedArray(),
             )
 
         val allowedActions = getAllowedActions()
@@ -53,7 +54,7 @@ class PlayerTurnAction(override val game: IGame) : IStateAction {
 
         chosenAction.execute()
 
-        if (ScoreCounter.recalculate(game.player.activeHand) > 21)
+        if (ScoreCounter.calculateForHand(game.player.activeHand) > 21)
             StandAction(game, game.player.activeHand).execute()
 
         if (game.player.hands.all { it.blocked })

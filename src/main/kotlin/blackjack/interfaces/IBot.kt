@@ -1,13 +1,13 @@
 package blackjack.interfaces
-
 import blackjack.classes.Hand
 
 interface IBot : IOHandler {
-    override fun print(msg: String) {}
+    override fun println(msg: String) {}
+    override fun readLine(): String = ""
     override fun showCards(msg: String, cards: List<ICard>) {}
-    override fun showHands(msg: String, hands: Array<Hand>) {}
-    override fun chooseFromHands(msg: String, vararg hands: Hand): Hand {
-        return hands.first()
+    override fun showHands(msg: String, hands: List<Hand>) {}
+    override fun chooseFromHands(msg: String, defaultReturn: Hand, vararg hands: Hand): Hand {
+        return if (hands.isNotEmpty()) hands.first() else defaultReturn
     }
 
     /**

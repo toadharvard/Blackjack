@@ -5,22 +5,22 @@ import blackjack.classes.State
 import blackjack.interfaces.IGame
 import blackjack.interfaces.IStateAction
 
-class WinnerSelectionAction(override val game: IGame) :
+class SelectWinnerAction(override val game: IGame) :
     IStateAction {
     override fun execute(): State {
         if (game.player.hands.size == 0)
             return State.GameOver(game)
         val currentHand = game.player.hands.removeFirst()
 
-        val playerScore = ScoreCounter.recalculate(game.player.activeHand)
-        val dealerScore = ScoreCounter.recalculate(game.dealer.activeHand)
+        val playerScore = ScoreCounter.calculateForHand(game.player.activeHand)
+        val dealerScore = ScoreCounter.calculateForHand(game.dealer.activeHand)
         val playerHasBlackjack =
             (game.player.activeHand.cards.size == 2 && game.player.hands.size == 1 && playerScore == 21)
         val dealerHasBlackjack =
             (game.dealer.activeHand.cards.size == 2 && game.dealer.hands.size == 1 && dealerScore == 21)
 
         if (playerScore > 21)
-            return State.PlayerLooses(game, currentHand)
+            return State.PlayerLost(game, currentHand)
 
         if (dealerScore > 21) {
             return State.PlayerWon(game, currentHand)
@@ -36,6 +36,6 @@ class WinnerSelectionAction(override val game: IGame) :
         if (playerScore > dealerScore)
             return State.PlayerWon(game, currentHand)
 
-        return State.PlayerLooses(game, currentHand)
+        return State.PlayerLost(game, currentHand)
     }
 }

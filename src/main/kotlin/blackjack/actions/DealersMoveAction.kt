@@ -6,9 +6,9 @@ import blackjack.classes.State
 import blackjack.interfaces.IGame
 import blackjack.interfaces.IStateAction
 
-class DealerTurnAction(override val game: IGame) : IStateAction {
+class DealersMoveAction(override val game: IGame) : IStateAction {
     override fun execute(): State {
-        if (ScoreCounter.recalculate(game.dealer.activeHand) >= 17) {
+        if (ScoreCounter.calculateForHand(game.dealer.activeHand) >= 17) {
             return State.WinnerSelection(game)
         }
 

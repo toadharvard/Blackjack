@@ -14,7 +14,4 @@ class StrategyBasedBlackjackBot(player: Player) : Bot(player) {
         .addStrategy(13..21, 2..6, "Stand")
         .addStrategy(12..16, 7..11, "Hit")
         .addStrategy(17..21, 2..11, "Stand")
-    override fun chooseFromBetsInRange(msg: String, start: Int, stop: Int): Int {
-        return start
-    }
 }

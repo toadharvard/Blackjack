@@ -3,10 +3,9 @@ package blackjack.classes
 import blackjack.enums.CardFace
 import blackjack.interfaces.ICard
 import blackjack.interfaces.IHand
-import blackjack.interfaces.IPlayer
 
 object ScoreCounter {
-    fun recalculate(hand: IHand): Int {
+    fun calculateForHand(hand: IHand): Int {
         var total = 0
         var aceCount = 0
         for (card in hand.cards) {

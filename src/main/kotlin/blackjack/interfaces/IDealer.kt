@@ -1,4 +1,3 @@
 package blackjack.interfaces
 
-interface IDealer : IPlayer {
-}
+interface IDealer : IPlayer

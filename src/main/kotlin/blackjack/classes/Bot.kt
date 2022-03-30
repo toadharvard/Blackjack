@@ -1,13 +1,15 @@
 package blackjack.classes
 
 import blackjack.BlackjackGame
-import blackjack.classes.Dealer
-import blackjack.classes.ScoreCounter
 import blackjack.interfaces.*
+import java.io.InputStream
+import java.io.OutputStream
 
 abstract class Bot(val player: IPlayer) : IBot {
-    private val startBalance = player.balance
+    override val inStream: InputStream = System.`in`
+    override val outStream: OutputStream = System.out
 
+    private val startBalance = player.balance
     private var currentGame: IGame = BlackjackGame(Dealer(), player, this)
 
     override fun Map<Pair<Int, Int>, String>.addStrategy(
@@ -24,8 +26,8 @@ abstract class Bot(val player: IPlayer) : IBot {
     }
 
     override fun chooseFromPossibleActions(msg: String, vararg actionsNames: String): String {
-        val playerScore = ScoreCounter.recalculate(currentGame.player.activeHand)
-        val dealerScore = ScoreCounter.recalculate(currentGame.dealer.activeHand)
+        val playerScore = ScoreCounter.calculateForHand(currentGame.player.activeHand)
+        val dealerScore = ScoreCounter.calculateForHand(currentGame.dealer.activeHand)
         val name = strategy[Pair(playerScore, dealerScore)]
         if (name != null && name !in actionsNames) {
             if (name == "Double")
@@ -34,6 +36,10 @@ abstract class Bot(val player: IPlayer) : IBot {
                 return "Stand"
         }
         return name ?: "Stand"
+    }
+
+    override fun chooseFromBetsInRange(msg: String, start: Int, stop: Int): Int {
+        return start
     }
 
     override fun run(n: Int, resetBalanceAfterGame: Boolean) {

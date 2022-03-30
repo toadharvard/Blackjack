@@ -46,7 +46,7 @@ object StatisticCollector {
         }
     }
 
-    fun showFullStatistics() {
+    fun printFullStatisticToConsole() {
         println("Statistic for the last $totalGamesPlayed games")
         println("Number of:")
         println("1. Wins: $numberOfWins")
