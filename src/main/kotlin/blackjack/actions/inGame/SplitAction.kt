@@ -4,14 +4,14 @@ import blackjack.classes.Hand
 import blackjack.interfaces.IGame
 import blackjack.interfaces.IInGameAction
 
-class SplitAction(val game: IGame, val hand: Hand) : IInGameAction {
+class SplitAction(val game: IGame, val activeHand: Hand) : IInGameAction {
     override val displayName: String = "Split"
 
     override fun execute() {
-        val newHand = hand.splitByLastCard()
+        val newHand = activeHand.splitByLastCard()
         game.player.hands.add(newHand)
-        HitAction(game, hand).execute()
+        HitAction(game, activeHand).execute()
         HitAction(game, newHand).execute()
-        newHand.bet = hand.bet
+        newHand.bet = activeHand.bet
     }
 }
