@@ -1,6 +1,5 @@
 package blackjack
 
-import blackjack.classes.ScoreCounter
 import blackjack.classes.Shoe
 import blackjack.classes.State
 import blackjack.interfaces.IDealer

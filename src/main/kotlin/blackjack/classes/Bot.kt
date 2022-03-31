@@ -1,7 +1,9 @@
 package blackjack.classes
 
 import blackjack.BlackjackGame
-import blackjack.interfaces.*
+import blackjack.interfaces.IBot
+import blackjack.interfaces.IGame
+import blackjack.interfaces.IPlayer
 import java.io.InputStream
 import java.io.OutputStream
 

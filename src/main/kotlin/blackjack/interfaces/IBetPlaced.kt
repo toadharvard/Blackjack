@@ -1,5 +1,5 @@
 package blackjack.interfaces
 
-interface IBetPlaced : IHand {
+interface IBetPlaced{
     val bet: Int
 }
